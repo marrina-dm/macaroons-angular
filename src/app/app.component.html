@@ -47,7 +47,7 @@
           </li>
         </ul>
       </nav>
-      <a href="tel:{{phone}}" class="phone header__phone">{{ phone }}</a>
+      <a href="tel:{{phone}}" class="phone header__phone">{{ phone | phone }}</a>
     </div>
   </header>
   <div class="promo">
@@ -58,7 +58,7 @@
           Побалуйте себя и своих близких самыми вкусными и ароматными домашними пироженками Macaroon!
         </p>
         <div class="promo__action">
-          <button class="btn promo__btn" (click)="closeMenu(productsElement)">Выбрать макарун</button>
+          <button class="btn promo__btn" (click)="closeMenu(productsElement)" buttons>Выбрать макарун</button>
         </div>
       </div>
       <div class="promo__image">
@@ -80,13 +80,7 @@
       <img src="images/macaroon.png" alt="Макарун" class="about__image-img">
     </div>
     <div class="about__advantages">
-      <div class="advantage" *ngFor="let advantage of advantages; let i = index;">
-        <div class="advantage__number">
-          <span class="number__span">{{ i + 1 }}</span>
-        </div>
-        <h3 class="advantage__title">{{ advantage.title }}</h3>
-        <p class="advantage__text">{{ advantage.description }}</p>
-      </div>
+      <advantage *ngFor="let advantage of advantages; let i = index;" [advantage]="advantage" [index]="i"></advantage>
     </div>
   </div>
 </section>
@@ -95,19 +89,7 @@
   <div class="container products__container">
     <h2 class="title products__title">Выберите свой макарун</h2>
     <div class="products__items">
-      <div class="product" *ngFor="let product of products">
-        <div class="product__image">
-          <img src="images/products/{{product.image}}" alt="{{product.title}}" class="product__image-img">
-        </div>
-        <h3 class="product__title">{{ product.title }}</h3>
-        <div class="product__actions">
-          <p class="product__info">{{ product.count }} шт.</p>
-          <p class="product__info">{{ product.price }} руб.</p>
-          <div class="product__action">
-            <button class="btn product__btn" (click)="addToCart(product, order)">Заказать</button>
-          </div>
-        </div>
-      </div>
+      <product *ngFor="let product of products" [product]="product" (addToCartEvent)="addToCart($event)"></product>
     </div>
   </div>
 </section>
@@ -135,7 +117,7 @@
           <input type="text" class="form__input" placeholder="Ваше имя">
           <input type="tel" class="form__input" placeholder="+375 (__) ___ - __ - __">
         </label>
-        <button type="submit" class="btn form_btn">Оформить заказ</button>
+        <button type="submit" class="btn form_btn" buttons [defaultButton]="'-webkit-linear-gradient(90deg, rgb(30, 8, 113) 0%, rgb(92, 72, 215) 100%)'">Оформить заказ</button>
       </div>
     </div>
   </div>
@@ -153,16 +135,16 @@
       </svg>
       <p class="social__text">Мы в Instagram</p>
     </a>
-    <a href="tel:{{phone}}" class="phone footer__phone">{{ phone }}</a>
+    <a href="tel:{{phone}}" class="phone footer__phone">{{ phone | phone }}</a>
     <p class="footer__rights">Все права защищены, 2020</p>
   </div>
 </footer>
 
 <div class="present" *ngIf="showPresent">
   <div class="present__image">
-    <img src="images/present.png" alt="Подарок" class="present__image-img">
+    <img src="images/cart.png" alt="Корзина" class="present__image-img">
   </div>
-  <div class="present__block">
-    Оформите заказ и получите подарок!
+  <div class="present__block" *ngIf="cartService.sum">{{ cartService.sum.toFixed(2) | currency:"RUB":'руб.' }}
   </div>
+  <div class="products-count" *ngIf="cartService.count">{{ cartService.count }}</div>
 </div>

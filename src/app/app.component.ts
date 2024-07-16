@@ -1,14 +1,16 @@
-import { Component } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {AdvantageType} from "./types/advantage.type";
 import {ProductType} from "./types/product.type";
 import {FormType} from "./types/form.type";
+import {ProductService} from "./services/product.service";
+import {CartService} from "./services/cart.service";
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
   public isOpen: boolean = false;
   public advantages: AdvantageType[] = [
     {
@@ -29,32 +31,7 @@ export class AppComponent {
     }
   ];
 
-  public products: ProductType[] = [
-    {
-      image: '1.png',
-      title: 'Макарун с малиной',
-      count: 1,
-      price: '1,70'
-    },
-    {
-      image: '2.png',
-      title: 'Макарун с манго',
-      count: 1,
-      price: '1,70'
-    },
-    {
-      image: '3.png',
-      title: 'Пирог с ванилью',
-      count: 1,
-      price: '1,70'
-    },
-    {
-      image: '4.png',
-      title: 'Пирог с фисташками',
-      count: 1,
-      price: '1,70'
-    }
-  ];
+  public products: ProductType[] = [];
 
   public formValues: FormType = {
     productTitle: '',
@@ -63,8 +40,16 @@ export class AppComponent {
   };
 
   public showPresent: boolean = true;
-  public phone: string = '+375 (29) 368-98-68';
+  public phone: string = '375293689868';
   public instagramLink: string = 'https://www.instagram.com/';
+
+  constructor(private productService: ProductService,
+              public cartService: CartService) {
+  }
+
+  ngOnInit() {
+    this.products = this.productService.getProducts();
+  }
 
   public openMenu(): void {
     this.isOpen = true;
@@ -82,8 +67,7 @@ export class AppComponent {
     target.scrollIntoView({behavior: 'smooth'});
   }
 
-  public addToCart(product: ProductType, target: HTMLElement): void {
-    this.scrollTo(target);
-    this.formValues.productTitle = product.title.toUpperCase();
+  public addToCart(product: string): void {
+    alert(product + ' добавлен в корзину!');
   }
 }

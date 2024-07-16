@@ -1,0 +1,15 @@
+<div class="product">
+  <div class="product__image">
+    <img src="images/products/{{product.image}}" alt="{{product.title}}" class="product__image-img">
+  </div>
+  <h3 class="product__title">{{ product.title }}</h3>
+  <div class="product__actions">
+    <p class="product__info">{{ product.count }} шт.</p>
+    <p class="product__info">{{ product.price | currency:"RUB":'руб.' }}</p>
+    <div class="product__action">
+      <button class="btn product__btn" (click)="addProductToCart()" buttons
+              [defaultButton]="'-webkit-linear-gradient(90deg, rgb(30, 8, 113) 0%, rgb(92, 72, 215) 100%)'"
+              [hoverButton]="'rgb(40, 19, 130)'">Заказать</button>
+    </div>
+  </div>
+</div>
